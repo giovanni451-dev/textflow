@@ -334,13 +334,17 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             const href = this.getAttribute('href');
+            // Skip if it's a modal trigger button
+            if (this.classList.contains('startAutomatingBtn') || this.id === 'getStartedNavBtn') {
+                return; // Let modal handler take over
+            }
             if (href === '#' || href === '#!') return;
             
             e.preventDefault();
             const target = document.querySelector(href);
             
             if (target) {
-                const offsetTop = target.offsetTop - 70;
+                const offsetTop = target.offsetTop - 90;
                 window.scrollTo({
                     top: offsetTop,
                     behavior: 'smooth'
@@ -389,4 +393,108 @@ if (window.innerWidth > 768) {
         });
     });
 }
+
+// Modal functionality - run immediately and also on DOMContentLoaded
+(function initModal() {
+    const modalOverlay = document.getElementById('modalOverlay');
+    const modalClose = document.getElementById('modalClose');
+    const startAutomatingBtns = document.querySelectorAll('.startAutomatingBtn, #getStartedNavBtn');
+    const contactForm = document.getElementById('contactForm');
+
+    console.log('Modal initialization - elements:', { 
+        modalOverlay: !!modalOverlay, 
+        modalClose: !!modalClose, 
+        buttonsFound: startAutomatingBtns.length,
+        contactForm: !!contactForm 
+    });
+
+    if (!modalOverlay) {
+        console.error('Modal overlay not found! Retrying on DOMContentLoaded...');
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initModal);
+        }
+        return;
+    }
+
+    // Close modal function
+    function closeModal() {
+        modalOverlay.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    // Open modal - use capture phase to ensure it runs first
+    console.log('Found', startAutomatingBtns.length, 'buttons to attach modal to');
+    if (startAutomatingBtns.length > 0) {
+        startAutomatingBtns.forEach((btn, index) => {
+            console.log(`Attaching click handler to button ${index + 1}:`, btn);
+            // Use capture phase and higher priority
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+                e.stopImmediatePropagation();
+                console.log('Button clicked, opening modal. Overlay:', modalOverlay);
+                if (modalOverlay) {
+                    modalOverlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                    console.log('Modal should be visible now. Classes:', modalOverlay.className);
+                    // Force a reflow to ensure CSS applies
+                    void modalOverlay.offsetHeight;
+                } else {
+                    console.error('Modal overlay is null!');
+                }
+            }, true); // Use capture phase
+        });
+    } else {
+        console.warn('No buttons found with class .startAutomatingBtn or #getStartedNavBtn');
+        // Try alternative selectors
+        const altButtons = document.querySelectorAll('a[href="#"]');
+        console.log('Found', altButtons.length, 'buttons with href="#"');
+    }
+
+    // Close modal handlers
+    if (modalClose) {
+        modalClose.addEventListener('click', closeModal);
+    }
+
+    // Close on overlay click
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) {
+            closeModal();
+        }
+    });
+
+    // Close on Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && modalOverlay.classList.contains('active')) {
+            closeModal();
+        }
+    });
+
+    // Form submission
+    if (contactForm) {
+        contactForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = {
+                name: document.getElementById('name').value,
+                agencyName: document.getElementById('agencyName').value,
+                phone: document.getElementById('phone').value,
+                email: document.getElementById('email').value,
+                crm: document.getElementById('crm').value
+            };
+
+            // Here you would typically send the data to your backend
+            // For now, we'll just log it and show a success message
+            console.log('Form submitted:', formData);
+            
+            // Show success message (you can customize this)
+            alert('Thank you! We\'ll be in touch soon.');
+            
+            // Reset form and close modal
+            contactForm.reset();
+            closeModal();
+        });
+    }
+})();
 

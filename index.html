@@ -21,7 +21,7 @@
                     <a href="#features">Features</a>
                     <a href="#how-it-works">How it Works</a>
                     <a href="#testimonials">Testimonials</a>
-                    <a href="#cta" class="btn btn-primary">Get Started</a>
+                    <a href="#" class="btn btn-primary" id="getStartedNavBtn">Get Started</a>
                 </div>
                 <button class="mobile-menu-btn" id="mobileMenuBtn">
                     <span></span>
@@ -53,7 +53,7 @@
                     TextFlow follows up with buyers, tenants, landlords and appraisals <strong>the moment they enquire</strong>, using AI to book appointments and qualify leads — automatically.
                 </p>
                 <div class="hero-cta">
-                    <a href="#cta" class="btn btn-primary btn-large">Start Automating Your Follow-up <span class="btn-arrow">→</span></a>
+                    <a href="#" class="btn btn-primary btn-large startAutomatingBtn">Start Automating Your Follow-up <span class="btn-arrow">→</span></a>
                     <a href="#how-it-works" class="btn btn-secondary btn-large">See How It Works</a>
                 </div>
                 
@@ -372,8 +372,8 @@
                 <p class="cta-subtitle">Your competitors are slow.</p>
                 <p class="cta-subtitle"><strong>Your team won't be.</strong></p>
                 <div class="cta-buttons">
-                    <a href="#cta" class="btn btn-primary btn-large">Start Automating Your Follow-up <span class="btn-arrow">→</span></a>
-                    <a href="#how-it-works" class="btn btn-secondary-light btn-large">Book a Demo</a>
+                    <a href="#" class="btn btn-primary btn-large startAutomatingBtn">Start Automating Your Follow-up <span class="btn-arrow">→</span></a>
+                    <a href="https://calendly.com/kav-textflow/30min" target="_blank" class="btn btn-secondary-light btn-large">Book a Demo</a>
                 </div>
             </div>
         </div>
@@ -414,6 +414,47 @@
             </div>
         </div>
     </footer>
+
+    <!-- Modal Form -->
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-container">
+            <button class="modal-close" id="modalClose">&times;</button>
+            <div class="modal-content">
+                <h2 class="modal-title">Get Started with TextFlow</h2>
+                <p class="modal-subtitle">Fill out the form below and we'll get in touch with you.</p>
+                <form class="modal-form" id="contactForm">
+                    <div class="form-group">
+                        <label for="name">Name *</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="agencyName">Agency Name *</label>
+                        <input type="text" id="agencyName" name="agencyName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number *</label>
+                        <input type="tel" id="phone" name="phone" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email *</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="crm">CRM (Walt / VaultRE / Rex / Agentbox / MRI) *</label>
+                        <select id="crm" name="crm" required>
+                            <option value="">Select your CRM</option>
+                            <option value="Walt">Walt</option>
+                            <option value="VaultRE">VaultRE</option>
+                            <option value="Rex">Rex</option>
+                            <option value="Agentbox">Agentbox</option>
+                            <option value="MRI">MRI</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">Submit</button>
+                </form>
+            </div>
+        </div>
+    </div>
 
     <script src="/script.js"></script>
 </body>
