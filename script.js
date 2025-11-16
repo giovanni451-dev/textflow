@@ -344,7 +344,9 @@ document.addEventListener('DOMContentLoaded', () => {
             const target = document.querySelector(href);
             
             if (target) {
-                const offsetTop = target.offsetTop - 90;
+                // Use 60px offset on mobile, 90px on desktop
+                const navHeight = window.innerWidth <= 768 ? 60 : 90;
+                const offsetTop = target.offsetTop - navHeight;
                 window.scrollTo({
                     top: offsetTop,
                     behavior: 'smooth'
